@@ -1,4 +1,4 @@
-#Static pages for joekarl.github.io
+###Static pages for joekarl.github.io (theme tweaked from gorsuch.github.io)
 
 ###Things I'll forget about how to deploy this lol
 
