@@ -11,6 +11,8 @@ Basically because I felt like it, plus my other endeavours into game dev have be
 ##What is this game going to be?
 Basically I\'m shooting for an Asteroids clone. Let\'s call it \"Planetoids\" for now (legal reasons as expected). 
 
+![asteroids](/assets/images/asteroids_large.png "Asteroids")
+
 The basic things are as follows:
 
 * Basic gameplay (ship, planets, lives, score, aliens)
@@ -18,7 +20,6 @@ The basic things are as follows:
 * Code quality (should be clean, should have some reusable parts for future games)
 * Open code (code will be available on github)
 
-![asteroids](/assets/images/asteroids_large.png "Asteroids")
 
 ##Parts
 I\'m going to tackle this in a few parts:
