@@ -18,14 +18,14 @@ The basic things are as follows:
 * Basic gameplay (ship, planets, lives, score, aliens)
 * Playability (should be fun)
 * Code quality (should be clean, should have some reusable parts for future games)
-* Open code (code will be available on github)
+* Open code (code will be available on [github](https://github.com/joekarl/planetoids))
 
 
 ##Parts
 I\'m going to tackle this in a few parts:
 
 * Intro - this
-* Getting things setup - canvas, game loop, a ship, keyboard input
+* [Getting things setup](/2013/11/12/building-a-game-in-the-browser-part-2) - canvas, game loop, a ship, keyboard input
 * Shooting planets - planet creation, ship lasers, collision detection, game over
 * Sounds - sounds using howler.js
 * Backtracking - revamping with state machines, entity components
