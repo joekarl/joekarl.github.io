@@ -374,7 +374,7 @@ As you can see, I\'ve defined some human readable names for our up/left/right ar
 Now we just need to react to the keyboard input. Lets add an update method to our ship so handle it.
 
 {% highlight javascript %}
-var g {
+var g = {
     rotationSpeed: 0.07, //affect of rotation
     thrustSpeed: 0.3 //affect of thrust
 };
