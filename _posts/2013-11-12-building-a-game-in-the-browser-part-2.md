@@ -71,7 +71,7 @@ Every game (well most) have some sort of main loop. The purpose of the main loop
 So the code looks a bit strange, but basically what is happening here is we\'re creating a _loop function that will be called via requestAnimationFrame(). The loop uses the requested updates per second (g.ups) to coordinate calling the update function and render functions.
 
 {% highlight javascript %}
-var g= = {
+var g = {
     ...
     ups: 30,
     ...
