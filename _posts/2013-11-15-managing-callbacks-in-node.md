@@ -80,8 +80,8 @@ Neat huh? Basically we\'ve isolated all of our individual steps (doQuery, doSome
 ##Ok but how does that work again?
 So the first thing that async does is specify that each callback used should have this definition: `function (err, ...results){}`. So if you call the callback with an error (i.e. `callback(new Error())`) at any point of the pipeline, our ending callback will immediately get called with that error. If you call the callback with no error (i.e. `callback(null, someResult, anotherResult)`) then the next function in the pipeline will be called (and so on until the final call back is all that is left to be called). 
 
-##Quick aside - Partial functions
-
+<div class="well">
+###Quick aside - Partial functions
 
 ####So whats with the whole bind thing?
 If you notice, both doQuery and doUpdate need our db connection. However, doQuery is the first task in our pipline and doUpdate needs the result of the previous task (that doesn\'t have access to the db connection). 
@@ -114,6 +114,7 @@ add5(2); //7
 {% endhighlight %}
 
 Basically we create a new function that can be called with a limited subset of arguments (note, this is contrived b/c it can only handle 2arity functions).
+</div>
 
 ##Okay, what else can we do with async?
 So async also provides a bunch of other stuff you can do, specifically we\'ll look at 2 other flow control mechanisms: async.series and async.parallel. As you might expect, async.series does it\'s tasks in series and async.parallel does it\'s tasks in parallel. On completion of all tasks, the final callback will be called with the results of each task returned in order in an array.
