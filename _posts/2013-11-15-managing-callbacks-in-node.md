@@ -78,7 +78,8 @@ function doUpdate(connection, result, callback) {
 Neat huh? Basically we\'ve isolated all of our individual steps (doQuery, doSomethingAsyncWithResult, doUpdate), we\'ve isolated our db connection code, and anyone can look at the code and see exactly what order things are being performed in. Yay async.
 
 ##Quick aside
-###Ok... but how does that work again?
+
+###Ok but how does that work again?
 So the first thing that async does is specify that each callback used should have this definition: `function (err, ...results){}`. So if you call the callback with an error (i.e. `callback(new Error())`) at any point of the pipeline, our ending callback will immediately get called with that error. If you call the callback with no error (i.e. `callback(null, someResult, anotherResult)`) then the next function in the pipeline will be called (and so on until the final call back is all that is left to be called). 
 
 ###So whats with the whole bind thing?
@@ -86,7 +87,7 @@ If you notice, both doQuery and doUpdate need our db connection. However, doQuer
 
 So what we\'re doing is creating a partial function that gives the doQuery and doUpdate functions access to the db connection without having to supply it in the function call.
 
-###That\'s magic I say... magic isn\'t good for code.
+###That\'s magic I say! Magic isn\'t good for code!
 Well let\'s look at exactly what\'s going on here by creating our own bind function (this will be contrived and only handle simple functions with 2 arguments.
 
 {% highlight javascript %}
