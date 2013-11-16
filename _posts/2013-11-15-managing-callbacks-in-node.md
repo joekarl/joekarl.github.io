@@ -83,13 +83,13 @@ So the first thing that async does is specify that each callback used should hav
 <div class="well">
 <h3>Quick aside - Partial functions</h3>
 
-<h4>#So whats with the whole bind thing?</h4>
+<h4>So whats with the whole bind thing?</h4>
 If you notice, both doQuery and doUpdate need our db connection. However, doQuery is the first task in our pipline and doUpdate needs the result of the previous task (that doesn\'t have access to the db connection). 
 <br /><br />
-So what we\'re doing is creating a partial function that gives the doQuery and doUpdate functions access to the db connection without having to supply it in the function call.
+So what we're doing is creating a partial function that gives the doQuery and doUpdate functions access to the db connection without having to supply it in the function call.
 <br /><br />
-<h4>That\'s magic I say! Magic isn\'t good for code!</h4>
-Well let\'s look at exactly what\'s going on here by creating our own bind function (this will be contrived and only handle simple functions with 2 arguments.
+<h4>That's magic I say! Magic code is bad code!</h4>
+Well let's look at exactly what's going on here by creating our own bind function (this will be contrived and only handle simple functions with 2 arguments.
 <br /><br />
 {% highlight javascript %}
 function myBind(fn, arg1) {
@@ -115,7 +115,8 @@ add5(2); //7
 <br /><br />
 Basically we create a new function that can be called with a limited subset of arguments (note, this is contrived b/c it can only handle 2arity functions).
 <br /><br />
-This is what we\'re doing with the db connection with bind and our query and update functions. We setup a partial function that has db connection pre-bound into it so we don\'t have to pass it in from the previous pipeline task.
+<h4>Alright thats not too bad, where can we use this again?</h4>
+This is what we're doing with the db connection with bind and our query and update functions. We setup a partial function that has db connection pre-bound into it so we don't have to pass it in from the previous pipeline task.
 </div>
 
 ##Okay, what else can we do with async?
