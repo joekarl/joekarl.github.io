@@ -114,6 +114,8 @@ add5(2); //7
 {% endhighlight %}
 
 Basically we create a new function that can be called with a limited subset of arguments (note, this is contrived b/c it can only handle 2arity functions).
+
+This is what we\'re doing with the db connection with bind and our query and update functions. We setup a partial function that has db connection pre-bound into it so we don\'t have to pass it in from the previous pipeline task.
 </div>
 
 ##Okay, what else can we do with async?
