@@ -81,16 +81,16 @@ Neat huh? Basically we\'ve isolated all of our individual steps (doQuery, doSome
 So the first thing that async does is specify that each callback used should have this definition: `function (err, ...results){}`. So if you call the callback with an error (i.e. `callback(new Error())`) at any point of the pipeline, our ending callback will immediately get called with that error. If you call the callback with no error (i.e. `callback(null, someResult, anotherResult)`) then the next function in the pipeline will be called (and so on until the final call back is all that is left to be called). 
 
 <div class="well">
-###Quick aside - Partial functions
+<h3>Quick aside - Partial functions</h3>
 
-####So whats with the whole bind thing?
+<h4>#So whats with the whole bind thing?</h4>
 If you notice, both doQuery and doUpdate need our db connection. However, doQuery is the first task in our pipline and doUpdate needs the result of the previous task (that doesn\'t have access to the db connection). 
-
+<br /><br />
 So what we\'re doing is creating a partial function that gives the doQuery and doUpdate functions access to the db connection without having to supply it in the function call.
-
-####That\'s magic I say! Magic isn\'t good for code!
+<br /><br />
+<h4>That\'s magic I say! Magic isn\'t good for code!</h4>
 Well let\'s look at exactly what\'s going on here by creating our own bind function (this will be contrived and only handle simple functions with 2 arguments.
-
+<br /><br />
 {% highlight javascript %}
 function myBind(fn, arg1) {
     return function(arg2) {
@@ -112,9 +112,9 @@ var add5 = myBind(add, 5);
 add5(1); //6
 add5(2); //7
 {% endhighlight %}
-
+<br /><br />
 Basically we create a new function that can be called with a limited subset of arguments (note, this is contrived b/c it can only handle 2arity functions).
-
+<br /><br />
 This is what we\'re doing with the db connection with bind and our query and update functions. We setup a partial function that has db connection pre-bound into it so we don\'t have to pass it in from the previous pipeline task.
 </div>
 
