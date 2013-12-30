@@ -11,3 +11,6 @@ source: .
 destination: ./_site
 permalink: /:year/:month/:day/:title
 exclude: ['README.md', '.gitignore', 'Gemfile', 'Gemfile.lock']
+name: Things I've Learned
+description: Things I've Learned
+url: http://joekarl.github.io
