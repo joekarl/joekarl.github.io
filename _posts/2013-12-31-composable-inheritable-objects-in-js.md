@@ -129,7 +129,7 @@ Yup, you can specify the prototype you\'re inheriting from and specify propertie
 This is pretty much just syntactic sugar at this point but makes things a little more concise.
 
 ##Other cool things, composable objects
-Say now we want a Zed object that has a Bar object. We can easily achieve this by wrapping our object creation in a self executing function;
+Say now we want all Zed objects to share a single Bar object. We can easily achieve this by wrapping our object creation in a self executing function:
 
 {% highlight javascript %}
 var Foo = Object.create({}, {
@@ -155,28 +155,126 @@ var Bar = Object.create(Foo, {
     }
 });
 
-var Zed = (function(){
-    return Object.create({}, {
-        bar: {writable: true},
-        init: {
-            value: function() {
-                this.bar = Object.create(Bar);
-                return this;
-            }
-        }
-    });
-})();
+var Zed = Object.create({}, {
+    bar: {value: Object.create(Bar)}
+});
 
 var f = Object.create(Foo).init(1,2);
 var b = Object.create(Bar).init(3,4,5);
-var z = Object.create(Zed).init();
+var z = Object.create(Zed);
 z.bar.x = 6;
 z.bar.y = 7;
 z.bar.z = 8;
 
+var z2 = Object.create(Zed); //this will have the same bar value
+
 console.log("f x,y: " + f.x + "," + f.y); //1,2
 console.log("b x,y,z: " + b.x + "," + b.y + "," + b.z); //3,4,5
-console.log("z x,y,z: " + z.bar.x + "," + z.bar.y + "," + z.bar.z); //6,7,8
+console.log("z bar x,y,z: " + z.bar.x + "," + z.bar.y + "," + z.bar.z); //6,7,8
+console.log("z2 bar x,y,z: " + z2.bar.x + "," + z2.bar.y + "," + z2.bar.z); //6,7,8
+console.log("b is Foo? " + Foo.isPrototypeOf(b)); //true
+{% endhighlight %}
+
+####What about a new Bar object per instance?
+We can do this to, just need to setup a getter that uses lazy initialization to create a Bar object as needed and then caches it for later use:
+
+{% highlight javascript %}
+var Foo = Object.create({}, {
+    x: {writable: true, value: 0},
+    y: {writable: true, value: 0},
+    init: {
+        value: function(x, y){
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+    }
+});
+
+var Bar = Object.create(Foo, {
+    z: {writable: true, value: 0},
+    init: {
+        value: function(x, y, z) {
+            Foo.init.apply(this, [x, y]);
+            this.z = z;
+            return this;
+        }
+    }
+});
+
+var Zed = Object.create({}, {
+    bar: {
+        get: function() {
+            if (this.__bar__) {
+                return this.__bar__;
+            } else {
+                this.__bar__ = Object.create(Bar);
+                return this.__bar__;
+            }
+        }
+    }
+});
+
+var f = Object.create(Foo).init(1,2);
+var b = Object.create(Bar).init(3,4,5);
+var z = Object.create(Zed);
+z.bar.x = 6;
+z.bar.y = 7;
+z.bar.z = 8;
+
+var z2 = Object.create(Zed);
+
+console.log("f x,y: " + f.x + "," + f.y); //1,2
+console.log("b x,y,z: " + b.x + "," + b.y + "," + b.z); //3,4,5
+console.log("z bar x,y,z: " + z.bar.x + "," + z.bar.y + "," + z.bar.z); //6,7,8
+console.log("z2 bar x,y,z: " + z2.bar.x + "," + z2.bar.y + "," + z2.bar.z); //0,0,0
+console.log("b is Foo? " + Foo.isPrototypeOf(b)); //true
+{% endhighlight %}
+
+Of course you could leave that property undefined and define it after construction too: 
+
+{% highlight javascript %}
+var Foo = Object.create({}, {
+    x: {writable: true, value: 0},
+    y: {writable: true, value: 0},
+    init: {
+        value: function(x, y){
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+    }
+});
+
+var Bar = Object.create(Foo, {
+    z: {writable: true, value: 0},
+    init: {
+        value: function(x, y, z) {
+            Foo.init.apply(this, [x, y]);
+            this.z = z;
+            return this;
+        }
+    }
+});
+
+var Zed = Object.create({}, {
+    bar: {writable: true}
+});
+
+var f = Object.create(Foo).init(1,2);
+var b = Object.create(Bar).init(3,4,5);
+var z = Object.create(Zed);
+z.bar.x = 6;
+z.bar.y = 7;
+z.bar.z = 8;
+
+var z2 = Object.create(Zed);
+z2.bar = Object.create(Bar);
+
+console.log("f x,y: " + f.x + "," + f.y); //1,2
+console.log("b x,y,z: " + b.x + "," + b.y + "," + b.z); //3,4,5
+console.log("z bar x,y,z: " + z.bar.x + "," + z.bar.y + "," + z.bar.z); //6,7,8
+console.log("z2 bar x,y,z: " + z2.bar.x + "," + z2.bar.y + "," + z2.bar.z); //0,0,0
 console.log("b is Foo? " + Foo.isPrototypeOf(b)); //true
 {% endhighlight %}
 
