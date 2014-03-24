@@ -312,7 +312,7 @@ function areWeDone(i) {
 
 function doRun(i, cb) {
     var start = new Date().getTime();
-    simpleAsync.parallelize([
+    parallelize([
       wait10,
       wait10,
       wait10,
