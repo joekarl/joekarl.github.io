@@ -430,3 +430,13 @@ gains or losses. If you think you\'re hitting a bottleneck due to a flow control
 library, you probably aren\'t. Benchmark your code to identify where your code
 and identify where your time is spent, then if it really is your code flow
 library, then dive lower.
+
+Another consideration other than performance is memory usage. Consistently all
+of the promise libraries used a lot of memory. While the async.js code used less
+it still was internally creating garbage and causing issues with memory usage.
+The native callback solution solidly outperformed the async.js and promise
+implementations in the memory category by just not doing as much. If you are in
+a tight memory footprint situation or are dealing with larger data sets, this
+should certainly be taken into consideration when including various flow control
+libraries. Thrashing of memory is a big performance killer and using libraries
+that generate unecessary garbage will exacerbate memory issues.
